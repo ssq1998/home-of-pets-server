@@ -1,0 +1,23 @@
+const UserRouter = require('./user')
+const GoodRouter = require('./good')
+const StoreRouter = require('./store')
+const CartRouter = require('./cart')
+const OrderRouter = require('./order')
+const HomepageRouter = require('./homepage')
+const UploadRouter = require('./upload')
+const ArticleRouter = require('./article')
+const ReceivingInfoRouter = require('./receivinginfo')
+const AlipayRouter = require('./alipay')
+
+module.exports = app => {
+    app.use('/user', UserRouter)
+    app.use('/good', GoodRouter)
+    app.use('/store', StoreRouter)
+    app.use('/cart', CartRouter)
+    app.use('/order', OrderRouter)
+    app.use('/homepage', HomepageRouter)
+    app.use('/upload', UploadRouter)
+    app.use('/article', ArticleRouter)
+    app.use('/receivinginfo', ReceivingInfoRouter)
+    app.use('/alipay', AlipayRouter)
+}
