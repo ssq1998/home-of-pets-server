@@ -28,20 +28,32 @@ const isAdmin = async(req,res,next)=>{
     }
 }
 
-// 获取登录用户信息
-router.get('/getLoginUserInfo',async(req,res)=>{
-    let token = req.headers.authorization.split(' ').pop()
-    if (token) {
-        jwt.verify(token,secret,(err,decoded) => {
-            if (err) {
-                if (err.name === 'JsonWebTokenError') {
-                    return res.status(401).send('该token已失效')
-                } else if (err.name === 'TokenExpiredError') {
-                    return res.status(401).send('该token已过期')
+const verifyToken = async(req, res, next) => {
+    if (req.headers.authorization) {
+        const token = req.headers.authorization.split(' ').pop()
+        if (token) {
+            jwt.verify(token,secret,(err,decoded) => {
+                if (err) {
+                    if (err.name === 'JsonWebTokenError') {
+                        return res.status(401).send('该token已失效')
+                    } else if (err.name === 'TokenExpiredError') {
+                        return res.status(401).send('该token已过期')
+                    }
+                } else {
+                    next()
                 }
-            }
-        })
+            })
+        } else {
+            res.status(401).send('请先进行登录')
+        }
+    } else {
+        res.status(401).send('请先进行登录')
     }
+}
+
+// 获取登录用户信息
+router.get('/getLoginUserInfo', verifyToken, async(req,res) => {
+    const token = req.headers.authorization.split(' ').pop()
     const { _id } = jwt.verify(token,secret)
     const user = await User.findById(_id)
     if(user) {
@@ -52,20 +64,8 @@ router.get('/getLoginUserInfo',async(req,res)=>{
 })
 
 // 更新用户信息
-router.post('/updateUserInfo',async(req,res)=>{
-    let token = req.headers.authorization.split(' ').pop()
-    if (token) {
-        jwt.verify(token,secret,(err,decoded) => {
-            if (err) {
-                if (err.name === 'JsonWebTokenError') {
-                    return res.status(401).send('该token已失效')
-                } else if (err.name === 'TokenExpiredError') {
-                    return res.status(401).send('该token已过期')
-                }
-            }
-        })
-    }
-    console.log(req.body)
+router.post('/updateUserInfo', verifyToken, async(req,res)=>{
+    // console.log(req.body)
     const { _id, username, sex, birth, signature } = req.body
     let user = await User.findOneAndUpdate({
         _id: _id
