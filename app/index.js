@@ -14,10 +14,12 @@ app.use(compression())
 mongo(app)
 
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({
+app.use(
+  bodyParser.urlencoded({
     extended: false,
-    limit: '1024mb'
-}))
+    limit: '1024mb',
+  })
+)
 // routes(app) 要写在上面两行代码下面，否则从前端获取的数据为undefined
 routes(app)
 
@@ -25,5 +27,5 @@ app.use(express.static('E:/home-of-pets-server/app/router'))
 
 const { host, port } = ports.server
 app.listen(port, () => {
-    console.log(`服务启动成功:http://${host}:${port}`)
+  console.log(`服务启动成功:http://${host}:${port}`)
 })

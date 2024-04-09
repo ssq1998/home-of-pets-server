@@ -1,0 +1,33 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": ["eslint:recommended", "prettier"],
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
+  "plugins": ["prettier"],
+  /**
+    规则严重性
+      "off" 或 0 - 关闭规则
+      "warn" 或 1 - 启用并视作警告（不影响退出）
+      "error" 或 2 - 启用并视作错误（触发时退出代码为 1）
+    */
+  "rules": {
+    "prettier/prettier": "error",
+
+    "quotes": ["error", "single"],
+    "semi": "off", // 语句强制分号结尾
+    "no-console": "off",
+    "no-const-assign": "error", // 禁止修改const声明的变量
+    "no-duplicate-case": "error", // switch中的case标签不能重复
+    "no-extra-semi": "error", // 禁止多余的冒号
+    "no-multi-spaces": "warn", // 不能用多余的空格
+    "comma-dangle": ["error", "only-multiline"]
+  }
+}
